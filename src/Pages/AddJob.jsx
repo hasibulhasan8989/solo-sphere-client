@@ -10,6 +10,7 @@ const AddJob = () => {
 
     const {user}=useAuth()
      const [startDate, setStartDate] = useState(new Date());
+
      const handleJobs=e=>{
         e.preventDefault()
         const job_title=e.target.job_title.value;
@@ -34,6 +35,8 @@ const AddJob = () => {
          .then(res=>{
             console.log(res.data)
             toast.success('Job Posted')
+            e.target.reset()
+
          })
 
      }

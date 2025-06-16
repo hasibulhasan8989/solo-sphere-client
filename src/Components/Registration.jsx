@@ -34,6 +34,7 @@ const Registration = () => {
       await updateUserProfile(name,photo)
       setUser({...user ,photoURL:photo,displayName:name})
       toast.success('Registration Successful')
+      e.target.reset()
    
       
 
@@ -110,6 +111,7 @@ const Registration = () => {
                 name='name'
                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                 type='text'
+                required
               />
             </div>
             <div className='mt-4'>
@@ -125,6 +127,8 @@ const Registration = () => {
                 name='photo'
                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                 type='text'
+                placeholder="Direct link"
+                required
               />
             </div>
             <div className='mt-4'>

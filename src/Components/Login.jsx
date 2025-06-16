@@ -1,15 +1,35 @@
-import toast from "daisyui/components/toast";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 
 
-const Login = () => {
-  const  {signInWithGoogle}=useAuth()
+const Login =  () => {
+  const navigate=useNavigate()
+  const  {signInWithGoogle,signIn}=useAuth()
+
+  const handleLogin= async(e)=>{
+      e.preventDefault();
+      const email=e.target.email.value;
+      const password=e.target.password.value;
+      
+
+      try{
+         await signIn(email,password)
+        navigate('/')
+
+      }catch(err){
+        console.log(err)
+      }
+
+  }
+
+
    const handleGoogle =()=>{
     signInWithGoogle()
     .then(res=>{
       console.log(res)
-      toast.success('Registration Successful')
+      navigate('/')
+      
     })
     .catch(err=>{
       console.log(err)
@@ -74,7 +94,7 @@ const Login = () => {
 
             <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
           </div>
-          <form>
+          <form onSubmit={handleLogin}>
             <div className='mt-4'>
               <label
                 className='block mb-2 text-sm font-medium text-gray-600 '

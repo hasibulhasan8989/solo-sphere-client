@@ -44,10 +44,10 @@ const Navbar = () => {
               <Link to={'/addJob'} className='justify-between'>Add Job</Link>
             </li>
             <li>
-              <div>My Posted Jobs</div>
+              <Link to={'/my-posted-jobs'}>My Posted Jobs</Link>
             </li>
             <li>
-              <div>My Bids</div>
+              <Link to={'/my-bids'}>My Bids</Link>
             </li>
             <li>
               <div>Bid Requests</div>
