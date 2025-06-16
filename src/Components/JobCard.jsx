@@ -9,8 +9,8 @@ const JobCard = ({job}) => {
         <span className='text-xs font-light text-gray-800 '>
           Deadline: {deadline}
         </span>
-        <span className='px-3 py-1 text-[8px] text-blue-800 uppercase bg-blue-200 rounded-full '>
-          Web Development
+        <span className={`px-3 py-1 text-[8px]  uppercase  ${job.category==='Web Development'? 'text-red-500 bg-red-200':  "text-blue-500 bg-blue-200" } ${job.category==="Graphics Design" && 'text-yellow-500 bg-yellow-100'} rounded-full `}>
+          {job.category}
         </span>
       </div>
 

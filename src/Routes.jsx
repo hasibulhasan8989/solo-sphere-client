@@ -8,12 +8,14 @@ import JobDetails from "./Pages/JobDetails";
 import MyBids from "./Pages/MyBids";
 import MyPostedJobs from "./Pages/MyPostedJobs";
 import UpdateJob from "./Pages/UpdateJob";
+import ErrorPage from "./Pages/ErrorPage";
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Main></Main>,
+    errorElement:<ErrorPage></ErrorPage>,
     children:[
     {
         path:'/',
