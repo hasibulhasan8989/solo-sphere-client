@@ -1,11 +1,14 @@
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 
 
 const Login =  () => {
   const navigate=useNavigate()
   const  {signInWithGoogle,signIn}=useAuth()
+  const location=useLocation()
+
+  
 
   const handleLogin= async(e)=>{
       e.preventDefault();
@@ -15,7 +18,7 @@ const Login =  () => {
 
       try{
          await signIn(email,password)
-        navigate('/')
+       navigate(location.state || '/', {replace:true} )
 
       }catch(err){
         console.log(err)
@@ -28,7 +31,7 @@ const Login =  () => {
     signInWithGoogle()
     .then(res=>{
       console.log(res)
-      navigate('/')
+      navigate(location.state || '/', {replace:true} )
       
     })
     .catch(err=>{

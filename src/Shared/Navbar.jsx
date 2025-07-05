@@ -50,7 +50,8 @@ const Navbar = () => {
               <Link to={'/my-bids'}>My Bids</Link>
             </li>
             <li>
-              <div>Bid Requests</div>
+              <Link to={`/bit-request`} >Bid Requests</Link>
+              
             </li>
             <li className='mt-2'>
               <button onClick={()=>logOut()} className='bg-gray-200 block text-center'>Logout</button>

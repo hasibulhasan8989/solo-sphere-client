@@ -1,12 +1,12 @@
 
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
 
 
 const Registration = () => {
-
+   
   const  {signInWithGoogle,createUser,updateUserProfile,setUser,user}=useAuth()
   const handleGoogle =()=>{
     signInWithGoogle()

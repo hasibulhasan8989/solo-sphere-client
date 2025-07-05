@@ -27,7 +27,7 @@ const JobDetails = () => {
     e.preventDefault()
     const jobTitle=job_title || 'no title'
     const jobId=_id;
-    const status='pending'
+    const status='Pending'
     const buyerEmail=buyer.email;
     const price=parseInt(e.target.price.value);
     const bitEmail=user?.email;
