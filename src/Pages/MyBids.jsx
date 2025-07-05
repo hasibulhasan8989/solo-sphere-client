@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useAuth from "../Hooks/useAuth";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -7,16 +7,16 @@ const MyBids = () => {
   const { user } = useAuth();
   const [bits, setBits] = useState([]);
 
-  const getData=()=>{
+  const getData=useCallback(()=>{
      fetch(`http://localhost:9000/my-bids/${user.email}`)
       .then((res) => res.json())
       .then((data) => setBits(data));
-  }
+  },[user.email])
 
   useEffect(() => {
     getData()
    
-  }, [user]);
+  }, [getData]);
 
 
   const handleStatus=(id,currentStatus,status)=>{

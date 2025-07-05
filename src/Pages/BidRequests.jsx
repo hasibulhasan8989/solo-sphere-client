@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import useAuth from "../Hooks/useAuth"
 import toast from "react-hot-toast"
 
@@ -9,14 +9,14 @@ const BidRequests = () => {
     const [bitRequests,setBitRequest]=useState([])
     const {user}=useAuth()
 
-    const getData=()=>{
+    const getData=useCallback(()=>{
         axios.get(`http://localhost:9000/bit-request/${user.email}`)
          .then(data=>setBitRequest(data.data))
-    }
-
+    },[user.email]
+)
     useEffect(()=>{
        getData() 
-    },[user])
+    },[getData])
     
 
     const handleStatus=(id,currentStatus,status)=>{
