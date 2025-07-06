@@ -1,6 +1,7 @@
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
+import axios from "axios";
 
 
 const Login =  () => {
@@ -17,7 +18,9 @@ const Login =  () => {
       
 
       try{
-         await signIn(email,password)
+        const result= await signIn(email,password)
+        const user=result.user.email
+         axios.post(`http://localhost:9000/jwt`,{user},{withCredentials:true})
        navigate(location.state || '/', {replace:true} )
 
       }catch(err){
@@ -30,7 +33,9 @@ const Login =  () => {
    const handleGoogle =()=>{
     signInWithGoogle()
     .then(res=>{
-      console.log(res)
+      const user=res.user.email
+        axios.post(`http://localhost:9000/jwt`,{user},{withCredentials:true})
+        .then(data=>console.log(data.data))
       navigate(location.state || '/', {replace:true} )
       
     })

@@ -11,6 +11,7 @@ import {
   updateProfile,
 } from 'firebase/auth'
 import { app } from '../Firebase/firebase.config'
+import axios from 'axios'
 
 
 export const AuthContext = createContext(null)
@@ -38,6 +39,7 @@ const AuthProvider = ({children}) => {
   }
 
   const logOut = async () => {
+    await axios.get('http://localhost:9000/jwt/logout',{withCredentials:true})
     setLoading(true)
     return signOut(auth)
   }

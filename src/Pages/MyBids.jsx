@@ -2,37 +2,46 @@ import { useCallback, useEffect, useState } from "react";
 import useAuth from "../Hooks/useAuth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const MyBids = () => {
   const { user } = useAuth();
-  const [bits, setBits] = useState([]);
 
-  const getData=useCallback(()=>{
-     fetch(`http://localhost:9000/my-bids/${user.email}`)
-      .then((res) => res.json())
-      .then((data) => setBits(data));
-  },[user.email])
+  const getData = async () => {
+    const { data } = await axios.get(
+      `http://localhost:9000/my-bids/${user.email}`
+    );
+    console.log(data);
+    return data;
+  };
 
-  useEffect(() => {
-    getData()
-   
-  }, [getData]);
+  const { data: bits = [], refetch } = useQuery({
+    queryKey: ["bits", user.email],
+    queryFn: () => getData(),
+  });
 
+  const { mutateAsync } = useMutation({
+    mutationFn: async ({ id, status }) => {
+      await axios.patch(`http://localhost:9000/bits/${id}`, { status });
+    },
+    onSuccess: () => {
+      toast.success("Updated");
+      
+      refetch();
+    },
+  });
 
-  const handleStatus=(id,currentStatus,status)=>{
-        if(currentStatus===status){
-            return toast.error('Unknown Operation')
-        }
-
-        console.log(id,currentStatus,status)
-        axios.patch(`http://localhost:9000/bits/${id}`,{status})
-        .then(()=>{
-            getData()
-        })
-
+  const handleStatus = async (id, currentStatus, status) => {
+    if (currentStatus === status) {
+      return toast.error("Unknown Operation");
     }
 
-  console.log(bits);
+    await mutateAsync({ id, status });
+    // axios.patch(`http://localhost:9000/bits/${id}`,{status})
+    // .then(()=>{
+    //    refetch()
+    // })
+  };
 
   return (
     <section className="container px-4 mx-auto pt-12">
@@ -112,8 +121,15 @@ const MyBids = () => {
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <div className="flex items-center gap-x-2">
                           <p
-                            className={`px-3 py-1 rounded-full ${bit.category === 'Web Development' ? 'text-blue-500 bg-blue-100/60' : `text-red-500 bg-red-100/60` }
-                            ${bit.category === 'Graphics Design' && `text-yellow-400 bg-yellow-100/60`}
+                            className={`px-3 py-1 rounded-full ${
+                              bit.category === "Web Development"
+                                ? "text-blue-500 bg-blue-100/60"
+                                : `text-red-500 bg-red-100/60`
+                            }
+                            ${
+                              bit.category === "Graphics Design" &&
+                              `text-yellow-400 bg-yellow-100/60`
+                            }
                                text-xs`}
                           >
                             {bit.category}
@@ -121,18 +137,32 @@ const MyBids = () => {
                         </div>
                       </td>
                       <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                        <div className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2  ${bit.status === 'In Progress' ? 'text-blue-500 bg-blue-100/60' : `text-green-500 bg-green-100/60` }
-                            ${bit.status === 'Pending' && `text-yellow-400 bg-yellow-100/60`} ${bit.status === 'Rejected' && `text-red-600 bg-red-100/60`}`}>
+                        <div
+                          className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2  ${
+                            bit.status === "In Progress"
+                              ? "text-blue-500 bg-blue-100/60"
+                              : `text-green-500 bg-green-100/60`
+                          }
+                            ${
+                              bit.status === "Pending" &&
+                              `text-yellow-400 bg-yellow-100/60`
+                            } ${
+                            bit.status === "Rejected" &&
+                            `text-red-600 bg-red-100/60`
+                          }`}
+                        >
                           <span className="h-1.5 w-1.5 rounded-full bg-gray-300"></span>
                           <h2 className="text-sm font-normal ">{bit.status}</h2>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
-                        <button onClick={()=>handleStatus(bit._id,bit.status,"Complete")}
+                        <button
+                          onClick={() =>
+                            handleStatus(bit._id, bit.status, "Complete")
+                          }
                           title="Mark Complete"
                           className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none disabled:cursor-not-allowed"
-                          disabled={bit.status !=='In Progress'}
-                          
+                          // disabled={bit.status !=='In Progress'}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
